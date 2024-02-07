@@ -17,6 +17,7 @@ final lightTheme = ThemeData(
     backgroundColor: _lightColorScheme.background,
     surfaceTintColor: _lightColorScheme.background,
   ),
+  scaffoldBackgroundColor: _lightColorScheme.primaryContainer,
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ButtonStyle(
       foregroundColor: MaterialStateProperty.resolveWith(
