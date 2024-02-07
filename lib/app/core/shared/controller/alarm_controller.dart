@@ -2,7 +2,7 @@
 
 import 'dart:async';
 
-import 'package:alarm/alarm.dart';
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:tomar_agua/app/core/shared/components/app_snackbar.dart';
 
@@ -51,30 +51,16 @@ class AlarmController extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future initAlarm() async {
-    await Alarm.init();
-  }
-
   Future setAlarm(BuildContext context) async {
-    final alarmSettings = AlarmSettings(
-      id: 42,
-      dateTime: DateTime.now().add(const Duration(seconds: 5)),
-      assetAudioPath: 'assets/sounds/alarm.mp3',
-      loopAudio: true,
-      vibrate: true,
-      volume: 0.2,
-      fadeDuration: 3.0,
-      notificationTitle: 'Águaaaaaaaa',
-      notificationBody: 'Ta na hora de tomar água, calabreso!',
-      enableNotificationOnKill: true,
+    final result = await AndroidAlarmManager.oneShotAt(
+      DateTime.now().add(const Duration(seconds: 5)),
+      42,
+      () {
+        Navigator.pushReplacementNamed(context, 'stop');
+      },
+      exact: true,
+      wakeup: true,
     );
-
-    await Alarm.setNotificationOnAppKillContent(
-      'Águaaaaaaaa',
-      'Ta na hora de tomar água, calabreso!',
-    );
-
-    final result = await Alarm.set(alarmSettings: alarmSettings);
 
     if (result) {
       showAppSnackbar(
@@ -87,6 +73,6 @@ class AlarmController extends ChangeNotifier {
   }
 
   Future stopAlarm() async {
-    await Alarm.stop(42);
+    await AndroidAlarmManager.cancel(42);
   }
 }

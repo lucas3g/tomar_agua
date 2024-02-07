@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:alarm/alarm.dart';
 import 'package:flutter/material.dart';
 import 'package:tomar_agua/app/core/constants/constants.dart';
 import 'package:tomar_agua/app/core/di/dependecy_injection.dart';
@@ -19,24 +18,12 @@ class _HomePageState extends State<HomePage> {
 
   late StreamSubscription sub;
 
-  Future _initAlarm() async {
-    await alarmController.initAlarm();
-  }
-
   @override
   void initState() {
     super.initState();
 
-    _initAlarm();
-
     alarmController.addListener(() {
       setState(() {});
-    });
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      sub = Alarm.ringStream.stream.listen((_) {
-        Navigator.pushReplacementNamed(context, 'stop');
-      });
     });
   }
 
